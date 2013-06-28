@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/acclem_background" android:layout_width="fill_parent" android:orientation="vertical" android:weightSum="1" android:layout_height="match_parent">
+    <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent">
+        <TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_centerHorizontal="false"  android:textColor="#ff000000" android:id="@+id/SensorChanged" android:text="Acceleration on each axis:"></TextView>
+        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="#ff000000" android:id="@+id/XT" android:text="x=" android:layout_below="@+id/SensorChanged"></TextView>
+    </RelativeLayout>
+    <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="#ff000000" android:id="@+id/YT" android:text="y=" android:layout_height="wrap_content"></TextView>
+    <TextView android:textAppearance="?android:attr/textAppearanceMedium"  android:textColor="#ff000000" android:id="@+id/ZT" android:text="z=" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+    <Button android:text="Start" android:id="@+id/start_btn" android:layout_height="wrap_content" android:textColor="#ff0000ff" android:layout_width="wrap_content"></Button>
+    <Button android:layout_gravity="right" android:textColor="#ff0000ff" android:id="@+id/stop_btn" android:text="Stop" android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+         <TextView android:textColor="#ff0000ff" android:text="Please specify the label:" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+
+         <Spinner  
+        android:id= "@+id/choose_label"  
+        android:layout_width= "fill_parent"  
+        android:layout_height= "wrap_content" >  
+    </Spinner> 
+         <Button android:id="@+id/manage_DB_btn" android:text="Save Data To File" android:textColor="#ff0000ff" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_weight="0.13" android:layout_width="148dp"></Button>
+         <Button android:id="@+id/delete_btn" android:text="Delete All Data" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal"></Button>
+   
+  </LinearLayout>
