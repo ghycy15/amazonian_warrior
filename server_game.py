@@ -172,8 +172,9 @@ class game:
 			#print "3"
 			if self.HPs[self.getDefender()] < 0:
 				self.end = True
-			
+				return -50
 			#print "4"
+
 			return self.currentRoundResult
 		else:
 			print "Attacker: %d, defender: %d, round index: %d" % (self.getAttacker(), self.getDefender(), self.roundIndex)
@@ -183,6 +184,8 @@ class game:
 			re = self.currentRoundResult
 			self.currentRoundResult = -1
 			print "Result Score: ", re
+			if self.end:
+				return -50
 			return re
 
 	def getAttacker(self):
