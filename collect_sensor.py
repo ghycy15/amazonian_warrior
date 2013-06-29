@@ -1,6 +1,7 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 import random
+import math
 
 # Restrict to a particular path.
 #class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -12,32 +13,74 @@ server = SimpleXMLRPCServer(("0.0.0.0", 8000))
 #server.register_introspection_functions()
 
 
+
+class dataBase:
+	def __init__(self):
+		pass
+
+class dataType1(dataBase):
+	a = 1
+	b = 1
+	c = 1
+	startTimestamp = None 
+	endTimestamp = None
+	interval = None
+	x = None
+	y = None
+	z = None
+	def __init__(self, startTimestamp, endTimestamp, x, y, z):
+		self.startTimestamp = startTimestamp
+		self.endTimestamp = endTimestamp
+		self.interval = endTimestamp - startTimestamp
+		self.x = x
+		self.y = y
+		self.z = z
+		self.distance = self.getDistance()
+	def getDistance(self):
+		return math.sqrt(pow(self.x, 2) + pow(self.y, 2) + pow(self.z, 2))
+
+	def getScore(self, defenderTrack):
+		if self.endTimestamp > defenderTrack.startTimestamp \
+			and self.endTimestamp < defenderTrack.endTimestamp \
+				and self.startTimestamp < defenderTrack.startTimestamp:
+			return self.a * (defenderTrack.startTimestamp - self.startTimestamp) * self.b * (self.distance/self.interval) \
+					+ self.c * (self.distance/self.interval - defenderTrack.distance/defenderTrack.interval)
+		return 0
+			
+
+
 class sensorDataManager:
 	data = None
 	def __init__(self):
-		data = dict()	
-	def addData(self, clientId, X, Y, Z, timestamp):
-		if clientId in data:
-			data[clientId].append((timestamp, X, Y, Z))
+		self.data = dict()	
+	def addData(self, clientId, rawDataEntry):
+		if clientId in self.data:
+			self.data[clientId].append(rawDataEntry)
 		else:
-			data[clientId] = [(timestamp, X, Y, Z)]
+			self.data[clientId] = [rawDataEntry]
 	def getDatabyId(self, clientId):
-		return data[clientId]
+		return self.data[clientId]
 	def getIds(self):
-		return data.keys()
-	
+		return self.data.keys()
+
 class dataAnalysis:
 	mydataManager = None 
 	def __init__(self, dataManager):
 		self.mydataManager = dataManager		
-	def makeJudgement(self):
-		return random.choice(mydataManager.getIds)
-			
-
+	def makeJudgement(self, aID, dID):
+		score = 0
+		for dataEntryA in self.mydataManager.getDatabyId(aID):
+			for dataEntryD in self.mydataManager.getDatabyId(dID):
+				score += dataEntryA.getScore(dataEntryD)
+		print score
+		return score
 
 class Game:
 	user1 = None 
 	user2 = None
+	user1Ready = False
+	user2Ready = False
+	roundIndex = 0
 	sensordataMan = sensorDataManager()
 	dataAna = dataAnalysis(sensordataMan)
 	readyClients = 0
@@ -63,16 +106,21 @@ class Game:
 		#	return True
 		#else:
 		#	return False
-
-	def sendSensorData(self, clientId, X, Y, Z, timestamp):
-		if self.fightStarted: 
-			self.sensordataMan.addData(clientId, X, Y, Z, timestamp)
+	
+	def sendSensorData(self, clientId, startTimestamp, endTimestamp, x, y, z):
+		print clientId, startTimestamp, endTimestamp, x, y, z
+		#if self.fightStarted: 
+		if True:
+			self.sensordataMan.addData(clientId, dataType1(startTimestamp, endTimestamp, x, y, z))
 			return True
 		else:
 			return False			
-
+	def getAttackerId(self):
+		return 1
+	def getDefenderId(self):
+		return 2
 	def getResult(self, clientId):
-		return self.dataAna.makeJudgement()
+		return self.dataAna.makeJudgement(self.getAttackerId(), self.getDefenderId())
 			
 
 
