@@ -160,6 +160,7 @@ class game:
 		return True
 
 	def getRoundResult(self, cliId):
+		print "user: ", self.user1, "status", self.endStatus[self.user1], "user: ", self.user2, "status", self.endStatus[self.user2]
 		if not (self.endStatus[self.user1] and self.endStatus[self.user2]):
 			self.endStatus[cliId] = True
 			return -100
@@ -244,8 +245,8 @@ class serverFuncs:
 	def getResult(self, sesId, cliId):
 		#print sesId
 		print "Result"
-		re = self.games[sesId].getRoundResult(cliId)
 		print "Result: ", re, "Id: ", cliId
+		re = self.games[sesId].getRoundResult(cliId)
 		if re == -50 and cliId in self.idSessDict:
 			del self.idSessDict[cliId] 
 		return int(re)
