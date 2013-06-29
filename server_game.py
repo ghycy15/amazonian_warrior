@@ -244,9 +244,9 @@ class serverFuncs:
 		return True
 	def getResult(self, sesId, cliId):
 		#print sesId
-		print "Result"
-		print "Result: ", re, "Id: ", cliId
+		print "Id: ", cliId
 		re = self.games[sesId].getRoundResult(cliId)
+		print "Result: ", re,"Id: ", cliId
 		if re == -50 and cliId in self.idSessDict:
 			del self.idSessDict[cliId] 
 		return int(re)
