@@ -140,10 +140,10 @@ class game:
 		self.roundIndex = 0
 	def setReady(self, user):
 		self.readyStatus[user] = True
-		if not self.end:
-			return True
-		else:
-			return False
+		#if not self.end:
+		#	return True
+		#else:
+		#	return False
 	def readyToStart(self, clientId):
 		if self.readyStatus[self.user1] and self.readyStatus[self.user2]:
 			if self.roundIndex not in self.rounds:
@@ -206,10 +206,14 @@ class serverFuncs:
 	pairs = {}
 	currentWaitingSession = 100
 	games = {}
+	idSessDict = {}
 	def login(self, clientId):
+		if clientId in self.idSessDict:
+			return self.idSessDict[clientId]
 		print "login %d" % clientId
 		if self.currentWaitingSession in self.pairs:
 			self.pairs[self.currentWaitingSession][1] = clientId
+			self.idSessDict[clientId] = self.currentWaitingSession
 			self.games[self.sessionId] = game(self.sessionId, self.pairs[self.sessionId][0], self.pairs[self.sessionId][1])
 			self.sessionId += 1
 			self.currentWaitingSession += 1
@@ -217,6 +221,7 @@ class serverFuncs:
 		else:
 			self.pairs[self.currentWaitingSession] = {}
 			self.pairs[self.currentWaitingSession][0] = clientId
+			self.idSessDict[clientId] = self.currentWaitingSession
 			return self.sessionId
 
 	def getMatch(self, sesId):
@@ -241,6 +246,8 @@ class serverFuncs:
 		print "Result"
 		re = self.games[sesId].getRoundResult(cliId)
 		print "Result: ", re
+		if re == -50 and cliId in self.idSessDict:
+			del self.idSessDict[cliId] 
 		return int(re)
 		
 		
