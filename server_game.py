@@ -245,7 +245,7 @@ class serverFuncs:
 		#print sesId
 		print "Result"
 		re = self.games[sesId].getRoundResult(cliId)
-		print "Result: ", re
+		print "Result: ", re, "Id: ", cliId
 		if re == -50 and cliId in self.idSessDict:
 			del self.idSessDict[cliId] 
 		return int(re)
